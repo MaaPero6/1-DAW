@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="author" content="Miguel Angel Antunez Ruiz">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Miguel - Prueba Carrusel</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #121212;
+            color: white;
+            margin: 0;
+            text-align: center;
+        }
+
+        .titulo-superior {
+            color: #ff4b2b;
+            text-transform: uppercase;
+            margin: 20px 0;
+        }
+
+        /* NAVEGACIÓN SUPERIOR */
+        .nav-moderna {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #1a1a1a;
+            padding: 20px;
+            gap: 15px;
+            border-bottom: 3px solid #ff4b2b;
+        }
+
+        /* Estilo para los botones de la nav */
+        .nav-moderna button {
+            appearance: none;
+            border: none;
+            background: #333;
+            color: white;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 1rem;
+            transition: 0.3s;
+        }
+
+        .nav-moderna button:hover {
+            background: #444;
+        }
+
+        .nav-moderna button:active {
+            background: #ff4b2b;
+        }
+
+        /* EL CARRUSEL (Scroller con Snap) */
+        .carousel {
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            list-style: none;
+            padding: 0;
+            margin: 40px auto;
+            width: 85%;
+            max-width: 750px;
+            border: 5px solid #333;
+            border-radius: 20px;
+            scrollbar-width: none;
+            /* Firefox */
+            scroll-behavior: smooth;
+            /* Movimiento fluido */
+        }
+
+        .carousel::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* Chrome/Edge/Safari */
+
+        .carousel li {
+            flex: 0 0 100%;
+            scroll-snap-align: center;
+        }
+
+        .carousel img {
+            width: 100%;
+            height: 450px;
+            object-fit: cover;
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1 class="titulo-superior">PRUEBA CARRUSEL</h1>
+
+    <nav class="nav-moderna">
+        <button onclick="document.querySelector('.carousel').scrollTo({left: 0})">Inicio</button>
+
+        <button onclick="document.querySelector('.carousel').scrollBy({left: -750})">❮</button>
+        <button onclick="document.querySelector('.carousel').scrollBy({left: 750})">❯</button>
+
+        <button onclick="document.querySelector('.carousel').scrollTo({left: 10000})">Final</button>
+    </nav>
+
+    <ul class="carousel">
+        <li><img src="https://picsum.photos/id/11/800/450"></li>
+        <li><img src="https://picsum.photos/id/22/800/450"></li>
+        <li><img src="https://picsum.photos/id/33/800/450"></li>
+        <li><img src="https://picsum.photos/id/44/800/450"></li>
+        <li><img src="https://picsum.photos/id/55/800/450"></li>
+        <li><img src="https://picsum.photos/id/66/800/450"></li>
+        <li><img src="https://picsum.photos/id/77/800/450"></li>
+        <li><img src="https://picsum.photos/id/88/800/450"></li>
+        <li><img src="https://picsum.photos/id/99/800/450"></li>
+        <li><img src="https://picsum.photos/id/101/800/450"></li>
+    </ul>
+
+</body>
+
+</html>
