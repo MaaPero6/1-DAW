@@ -5,119 +5,273 @@
     <meta charset="UTF-8">
     <meta name="author" content="Miguel Angel Antunez Ruiz">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Web Miguel - Prueba Carrusel</title>
+    <title>Mi Carrusel</title>
     <style>
+        /* En este proyecto del carrusel de imagenes sin usar JS, he probado a tirar mas de logica usando "botones invisibles", en los que cada boton apuntan a una foto
+           o "radio", y segun en que foto este, aparecera un boton u otro. Por ejemplo, si estoy en la foto 7, apareceran los botones que apuntan a la foto 6 y 8 respectivamente,
+           representando cada uno el boton izquierda y derecha. Es una forma que visualmente puede parecer mas compleja a la propuesta en el enlace, 
+           pero a mi parecer, mas lógica. Esto tambien se ha debido a las dificultades que me he encontrado intentando aplicar todos los requisitos pedidos en clase para el 
+           correcto funcionamiento del carrusel usando los contenidos del enlace, asi que me he buscado una alternativa que no me presentara tantos problemas a la hora de aplicar
+           estos requisitos. Los siguientes comentarios son simplemente "apuntes" mios para entender  mejor el codigo de un vistazo en el futuro. */
+
+        /* Configuración global y transiciones de fondo */
         body {
             font-family: 'Segoe UI', sans-serif;
-            background-color: #121212;
-            color: white;
             margin: 0;
-            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            /* Suaviza la transicion del cambio de color en el fondo, para que no se note el cambio de color tan brusco */
+            transition: background-color 0.5s;
         }
 
-        .titulo-superior {
-            color: #ff4b2b;
-            text-transform: uppercase;
+        h1 {
+            color: #000;
             margin: 20px 0;
+            text-transform: uppercase;
         }
 
-        /* NAVEGACIÓN SUPERIOR */
-        .nav-moderna {
+        /* Los inputs radio controlan el estado del carrusel, se ocultan para usar los labels como botones */
+        input[type="radio"] {
+            display: none;
+        }
+
+        /* Bloque de la barra de navegacion superior */
+        .nav-carrusel {
             display: flex;
             justify-content: center;
             align-items: center;
             background-color: #1a1a1a;
-            padding: 20px;
+            padding: 15px;
             gap: 15px;
             border-bottom: 3px solid #ff4b2b;
+            width: 100%;
+            position: sticky;
+            top: 0;
+            z-index: 10;
         }
 
-        /* Estilo para los botones de la nav */
-        .nav-moderna button {
-            appearance: none;
-            border: none;
+        /* Bloque del estilo de los botones: */
+        .nav-carrusel label {
             background: #333;
             color: white;
-            padding: 12px 25px;
-            border-radius: 8px;
+            padding: 10px 20px;
+            border-radius: 5px;
             font-weight: bold;
             cursor: pointer;
-            font-family: inherit;
-            font-size: 1rem;
             transition: 0.3s;
+            user-select: none;
         }
 
-        .nav-moderna button:hover {
-            background: #444;
+        /* Sirve para resaltar los botones de Inicio y Final. Si estoy en la primera foto, se destaca el boton "inicio"(porque estoy en el inicio)
+           y si estoy en la ultima foto, pues se resalta el boton "final" */
+        #r1:checked~.nav-carrusel .btn-inicio,
+        #r10:checked~.nav-carrusel .btn-final {
+            background: #ff8c00;
+            box-shadow: 0 0 10px #ff8c00;
         }
 
-        .nav-moderna button:active {
-            background: #ff4b2b;
+        /* Sirve para ocultar las tipicas flechas de navegacion que salen en el carrusel, para asi solo usar las de la parte superior. */
+        .nav-carrusel .at,
+        .nav-carrusel .si {
+            display: none;
+            font-size: 1.4rem;
         }
 
-        /* EL CARRUSEL (Scroller con Snap) */
-        .carousel {
-            display: flex;
-            overflow-x: auto;
-            scroll-snap-type: x mandatory;
-            list-style: none;
-            padding: 0;
-            margin: 40px auto;
+        /* El bloque de la logia de navegacion. Muestra la flecha derecha e izquierda relevante en ese momento. */
+        #r1:checked~.nav-carrusel .at1,
+        #r1:checked~.nav-carrusel .si2,
+        #r2:checked~.nav-carrusel .at1,
+        #r2:checked~.nav-carrusel .si3,
+        #r3:checked~.nav-carrusel .at2,
+        #r3:checked~.nav-carrusel .si4,
+        #r4:checked~.nav-carrusel .at3,
+        #r4:checked~.nav-carrusel .si5,
+        #r5:checked~.nav-carrusel .at4,
+        #r5:checked~.nav-carrusel .si6,
+        #r6:checked~.nav-carrusel .at5,
+        #r6:checked~.nav-carrusel .si7,
+        #r7:checked~.nav-carrusel .at6,
+        #r7:checked~.nav-carrusel .si8,
+        #r8:checked~.nav-carrusel .at7,
+        #r8:checked~.nav-carrusel .si9,
+        #r9:checked~.nav-carrusel .at8,
+        #r9:checked~.nav-carrusel .si10,
+        #r10:checked~.nav-carrusel .at9,
+        #r10:checked~.nav-carrusel .si10 {
+            display: inline-block;
+        }
+
+        /* Contenedor del visor (máscara para ocultar el resto de imágenes) */
+        .wrapper-fotos {
             width: 85%;
             max-width: 750px;
+            margin: 40px auto;
             border: 5px solid #333;
             border-radius: 20px;
-            scrollbar-width: none;
-            /* Firefox */
-            scroll-behavior: smooth;
-            /* Movimiento fluido */
+            overflow: hidden;
+            background: black;
         }
 
-        .carousel::-webkit-scrollbar {
-            display: none;
+        /* El visor contiene todas las fotos en línea (10 fotos * 100% cada una = 1000% de ancho) */
+        .visor-carrusel {
+            display: flex;
+            width: 1000%;
+            /* Curva Bezier para un movimiento más natural y fluido */
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        /* Chrome/Edge/Safari */
-
-        .carousel li {
-            flex: 0 0 100%;
-            scroll-snap-align: center;
+        .foto {
+            width: 10%;
         }
 
-        .carousel img {
+        .foto img {
             width: 100%;
             height: 450px;
             object-fit: cover;
             display: block;
+        }
+
+        /* Control del desplazamiento: Mueve el visor horizontalmente según el radio activo */
+        #r1:checked~.wrapper-fotos .visor-carrusel {
+            transform: translateX(0%);
+        }
+
+        #r2:checked~.wrapper-fotos .visor-carrusel {
+            transform: translateX(-10%);
+        }
+
+        #r3:checked~.wrapper-fotos .visor-carrusel {
+            transform: translateX(-20%);
+        }
+
+        #r4:checked~.wrapper-fotos .visor-carrusel {
+            transform: translateX(-30%);
+        }
+
+        #r5:checked~.wrapper-fotos .visor-carrusel {
+            transform: translateX(-40%);
+        }
+
+        #r6:checked~.wrapper-fotos .visor-carrusel {
+            transform: translateX(-50%);
+        }
+
+        #r7:checked~.wrapper-fotos .visor-carrusel {
+            transform: translateX(-60%);
+        }
+
+        #r8:checked~.wrapper-fotos .visor-carrusel {
+            transform: translateX(-70%);
+        }
+
+        #r9:checked~.wrapper-fotos .visor-carrusel {
+            transform: translateX(-80%);
+        }
+
+        #r10:checked~.wrapper-fotos .visor-carrusel {
+            transform: translateX(-90%);
+        }
+
+        /* Lógica de reactividad de fondo: Usa la pseudoclase :has() para detectar el estado de los inputs y cambiar el estilo del body */
+        body:has(#r1:checked) {
+            background-color: #ff4d4d;
+        }
+
+        body:has(#r2:checked) {
+            background-color: #4dff4d;
+        }
+
+        body:has(#r3:checked) {
+            background-color: #4d4dff;
+        }
+
+        body:has(#r4:checked) {
+            background-color: #ffff4d;
+        }
+
+        body:has(#r5:checked) {
+            background-color: #ff4dff;
+        }
+
+        body:has(#r6:checked) {
+            background-color: #ff944d;
+        }
+
+        body:has(#r7:checked) {
+            background-color: #ffb3ba;
+        }
+
+        body:has(#r8:checked) {
+            background-color: #4dffff;
+        }
+
+        body:has(#r9:checked) {
+            background-color: #b3664d;
+        }
+
+        body:has(#r10:checked) {
+            background-color: #994dff;
         }
     </style>
 </head>
 
 <body>
 
-    <h1 class="titulo-superior">PRUEBA CARRUSEL</h1>
+    <input type="radio" name="c" id="r1" checked>
+    <input type="radio" name="c" id="r2">
+    <input type="radio" name="c" id="r3">
+    <input type="radio" name="c" id="r4">
+    <input type="radio" name="c" id="r5">
+    <input type="radio" name="c" id="r6">
+    <input type="radio" name="c" id="r7">
+    <input type="radio" name="c" id="r8">
+    <input type="radio" name="c" id="r9">
+    <input type="radio" name="c" id="r10">
 
-    <nav class="nav-moderna">
-        <button onclick="document.querySelector('.carousel').scrollTo({left: 0})">Inicio</button>
+    <h1>MI CARRUSEL</h1>
 
-        <button onclick="document.querySelector('.carousel').scrollBy({left: -750})">❮</button>
-        <button onclick="document.querySelector('.carousel').scrollBy({left: 750})">❯</button>
+    <nav class="nav-carrusel">
+        <label for="r1" class="btn-inicio">Inicio</label>
 
-        <button onclick="document.querySelector('.carousel').scrollTo({left: 10000})">Final</button>
+        <label for="r1" class="at at1">&#10094;</label>
+        <label for="r1" class="at at2">&#10094;</label>
+        <label for="r2" class="at at3">&#10094;</label>
+        <label for="r3" class="at at4">&#10094;</label>
+        <label for="r4" class="at at5">&#10094;</label>
+        <label for="r5" class="at at6">&#10094;</label>
+        <label for="r6" class="at at7">&#10094;</label>
+        <label for="r7" class="at at8">&#10094;</label>
+        <label for="r8" class="at at9">&#10094;</label>
+
+        <label for="r2" class="si si2">&#10095;</label>
+        <label for="r3" class="si si3">&#10095;</label>
+        <label for="r4" class="si si4">&#10095;</label>
+        <label for="r5" class="si si5">&#10095;</label>
+        <label for="r6" class="si si6">&#10095;</label>
+        <label for="r7" class="si si7">&#10095;</label>
+        <label for="r8" class="si si8">&#10095;</label>
+        <label for="r9" class="si si9">&#10095;</label>
+        <label for="r10" class="si si10">&#10095;</label>
+
+        <label for="r10" class="btn-final">Final</label>
     </nav>
 
-    <ul class="carousel">
-        <li><img src="https://picsum.photos/id/11/800/450"></li>
-        <li><img src="https://picsum.photos/id/22/800/450"></li>
-        <li><img src="https://picsum.photos/id/33/800/450"></li>
-        <li><img src="https://picsum.photos/id/44/800/450"></li>
-        <li><img src="https://picsum.photos/id/55/800/450"></li>
-        <li><img src="https://picsum.photos/id/66/800/450"></li>
-        <li><img src="https://picsum.photos/id/77/800/450"></li>
-        <li><img src="https://picsum.photos/id/88/800/450"></li>
-        <li><img src="https://picsum.photos/id/99/800/450"></li>
-        <li><img src="https://picsum.photos/id/101/800/450"></li>
-    </ul>
+    <div class="wrapper-fotos">
+        <div class="visor-carrusel">
+            <div class="foto"><img src="https://picsum.photos/id/11/800/450"></div>
+            <div class="foto"><img src="https://picsum.photos/id/22/800/450"></div>
+            <div class="foto"><img src="https://picsum.photos/id/33/800/450"></div>
+            <div class="foto"><img src="https://picsum.photos/id/44/800/450"></div>
+            <div class="foto"><img src="https://picsum.photos/id/55/800/450"></div>
+            <div class="foto"><img src="https://picsum.photos/id/66/800/450"></div>
+            <div class="foto"><img src="https://picsum.photos/id/77/800/450"></div>
+            <div class="foto"><img src="https://picsum.photos/id/88/800/450"></div>
+            <div class="foto"><img src="https://picsum.photos/id/99/800/450"></div>
+            <div class="foto"><img src="https://picsum.photos/id/101/800/450"></div>
+        </div>
+    </div>
 
 </body>
 
