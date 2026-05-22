@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asignaturas DAW</title>
+
+    <!-- Google Fonts para usar una tipografia limpia -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- BLOQUE 1: Importacion de Font Awesome desde la web (INICIO) -->
+    <!-- Se carga la libreria de iconos desde el CDN de cdnjs -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- BLOQUE 1: Importacion de Font Awesome desde la web (FIN) -->
+
+    <!-- Estilos de la pagina -->
+    <style>
+        /* Variables de color y fuentes para simplificar el codigo */
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --border-color: #334155;
+            --text-main: #f8fafc;
+            --text-secondary: #94a3b8;
+            --font-family: 'Outfit', sans-serif;
+
+            /* BLOQUE 2: Color Royal-Blue (INICIO) */
+            --royal-blue: royalblue;
+            /* BLOQUE 2: Color Royal-Blue (FIN) */
+        }
+
+        /* Ajustes basicos de la pagina */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: var(--font-family);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem 1rem;
+        }
+
+        /* Contenedor principal de la botonera */
+        .dashboard-container {
+            width: 100%;
+            max-width: 1000px;
+            background-color: #111827;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 2.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        /* Estilo de la cabecera */
+        .dashboard-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .logo-area h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        /* BLOQUE 3: <i> como contenedor - Logo (INICIO) */
+        /* La etiqueta <i> se usa como contenedor del icono, dandole estilos de caja */
+        i.logo-icon-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 44px;
+            height: 44px;
+            border-radius: 8px;
+            background-color: var(--border-color);
+            color: #ffffff;
+            font-size: 1.25rem;
+            font-style: normal;
+            transition: all 0.3s ease;
+        }
+
+        /* BLOQUE 3: <i> como contenedor - Logo (FIN) */
+
+        /* BLOQUE  2: Hover en Royal-Blue - Logo (INICIO) */
+        /* Al pasar por encima del logo, el contenedor se vuelve Royal-Blue */
+        i.logo-icon-container:hover {
+            background-color: var(--royal-blue);
+        }
+
+        /* BLOQUE 2: Hover en Royal-Blue - Logo (FIN) */
+
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 1rem;
+        }
+
+        /* Rejilla de la botonera */
+        .button-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.25rem;
+        }
+
+        /* Estilo basico y plano de los botones */
+        .action-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.25s ease;
+        }
+
+        /* BLOQUE 2: Hover en Royal-Blue - Tarjeta (INICIO) */
+        /* Al hacer hover sobre la tarjeta, el borde cambia al color Royal-Blue */
+        .action-card:hover {
+            border-color: var(--royal-blue);
+            background-color: #1e293b;
+        }
+
+        /* BLOQUE 2: Hover en Royal-Blue - Tarjeta (FIN) */
+
+        .action-card:active {
+            transform: translateY(1px);
+        }
+
+        /* BLOQUE 3: <i> como contenedor - Tarjetas (INICIO) */
+        /* La etiqueta <i> se usa para envolver el icono Font Awesome y darle estilos de fondo redondo */
+        i.icon-container {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 46px;
+            height: 46px;
+            border-radius: 50%;
+            background-color: var(--border-color);
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+            font-style: normal;
+            margin-bottom: 1rem;
+            transition: all 0.25s ease;
+        }
+
+        /* BLOQUE 3: <i> como contenedor - Tarjetas (FIN) */
+
+        /* BLOQUE 2: Hover en Royal-Blue - Contenedor Icono (INICIO) */
+        /* Al hacer hover en la tarjeta, el contenedor del icono pasa a tener fondo Royal-Blue e icono blanco */
+        .action-card:hover i.icon-container {
+            background-color: var(--royal-blue);
+            color: #ffffff;
+        }
+
+        /* BLOQUE 2: Hover en Royal-Blue - Contenedor Icono (FIN) */
+
+        /* Estilos del texto de las tarjetas */
+        .card-content h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.4rem;
+            color: #ffffff;
+        }
+
+        .card-content p {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.4;
+        }
+
+        /* Estilo del pie de pagina */
+        .dashboard-footer {
+            text-align: center;
+            border-top: 1px solid var(--border-color);
+            padding-top: 1.5rem;
+            margin-top: 2.5rem;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        /* BLOQUE 3: <i> como contenedor - Footer (INICIO) */
+        /* Contenedor del icono de corazon en el pie de pagina */
+        i.heart-container {
+            color: #ef4444;
+            display: inline-flex;
+            font-style: normal;
+            transition: all 0.25s ease;
+            cursor: pointer;
+        }
+
+        /* BLOQUE 3: <i> como contenedor - Footer (FIN) */
+
+        /* BLOQUE 2: Hover en Royal-Blue - Footer (INICIO) */
+        /* Cambia el corazon a Royal-Blue cuando se pasa el cursor */
+        i.heart-container:hover {
+            color: var(--royal-blue);
+        }
+
+        /* BLOQUE 2: Hover en Royal-Blue - Footer (FIN) */
+
+        /* Adaptabilidad para pantallas de moviles */
+        @media (max-width: 768px) {
+            .dashboard-container {
+                padding: 1.5rem;
+            }
+
+            .logo-area h1 {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <main class="dashboard-container">
+        <!-- Cabecera principal del panel -->
+        <header class="dashboard-header">
+            <div class="logo-area">
+                <!-- BLOQUE 3: <i> como contenedor - Cabecera (INICIO) -->
+                <i class="logo-icon-container">
+                    <span class="fa-solid fa-graduation-cap"></span>
+                </i>
+                <!-- BLOQUE 3: <i> como contenedor - Cabecera (FIN) -->
+                <h1>Asignaturas DAW</h1>
+            </div>
+            <p class="subtitle">Botonera con las asignaturas del primer curso de DAW, integrando lo que me pareció más
+                interesante según la tarea que hicimos el otro día</p>
+        </header>
+
+        <!-- Seccion de botones con las asignaturas -->
+        <section class="button-grid">
+
+            <!-- Boton 1: Programacion -->
+            <a href="#" class="action-card">
+                <!-- BLOQUE 3: <i> como contenedor (INICIO) -->
+                <i class="icon-container">
+                    <span class="fa-solid fa-code"></span>
+                </i>
+                <!-- BLOQUE 3: <i> como contenedor (FIN) -->
+                <div class="card-content">
+                    <h3>Programación</h3>
+                    <p>Desarrollo de la logica de programacion, estructuras de control, algoritmos y orientacion a
+                        objetos en Java.</p>
+                </div>
+            </a>
+
+            <!-- Boton 2: Base de Datos -->
+            <a href="#" class="action-card">
+                <!-- BLOQUE 3: <i> como contenedor (INICIO) -->
+                <i class="icon-container">
+                    <span class="fa-solid fa-database"></span>
+                </i>
+                <!-- BLOQUE 3: <i> como contenedor (FIN) -->
+                <div class="card-content">
+                    <h3>Base de Datos</h3>
+                    <p>Diseño y creacion de bases de datos relacionales, consultas complejas, seguridad y optimizacion
+                        con SQL.</p>
+                </div>
+            </a>
+
+            <!-- Boton 3: Sistemas Informaticos -->
+            <a href="#" class="action-card">
+                <!-- BLOQUE 3: <i> como contenedor (INICIO) -->
+                <i class="icon-container">
+                    <span class="fa-solid fa-server"></span>
+                </i>
+                <!-- BLOQUE 3: <i> como contenedor (FIN) -->
+                <div class="card-content">
+                    <h3>Sistemas Informáticos</h3>
+                    <p>Instalacion, gestion y mantenimiento de sistemas operativos en red, virtualizacion y
+                        administracion de hardware.</p>
+                </div>
+            </a>
+
+            <!-- Boton 4: IPE 1 -->
+            <a href="#" class="action-card">
+                <!-- BLOQUE 3: <i> como contenedor (INICIO) -->
+                <i class="icon-container">
+                    <span class="fa-solid fa-briefcase"></span>
+                </i>
+                <!-- BLOQUE 3: <i> como contenedor (FIN) -->
+                <div class="card-content">
+                    <h3>IPE 1</h3>
+                    <p>Itinerario Personal para la Empleabilidad. Formacion en legislacion laboral, salud laboral y
+                        busqueda de empleo.</p>
+                </div>
+            </a>
+
+            <!-- Boton 5: Lenguaje de Marcas -->
+            <a href="#" class="action-card">
+                <!-- BLOQUE REQUISITO 3: <i> como contenedor (INICIO) -->
+                <i class="icon-container">
+                    <span class="fa-solid fa-file-code"></span>
+                </i>
+                <!-- BLOQUE REQUISITO 3: <i> como contenedor (FIN) -->
+                <div class="card-content">
+                    <h3>Lenguaje de Marcas</h3>
+                    <p>Diseño de paginas web usando lenguajes estructurados como HTML, CSS</p>
+                </div>
+            </a>
+
+            <!-- Boton 6: Entornos de Desarrollo -->
+            <a href="#" class="action-card">
+                <!-- BLOQUE REQUISITO 3: <i> como contenedor (INICIO) -->
+                <i class="icon-container">
+                    <span class="fa-solid fa-laptop-code"></span>
+                </i>
+                <!-- BLOQUE REQUISITO 3: <i> como contenedor (FIN) -->
+                <div class="card-content">
+                    <h3>Entornos de Desarrollo</h3>
+                    <p>Uso de entornos de desarrollo integrados (IDEs), control de versiones con Git, pruebas de
+                        software y diagramas UML.</p>
+                </div>
+            </a>
+
+        </section>
+
+        <!-- Pie de pagina -->
+        <footer class="dashboard-footer">
+            <p>Página creada por Miguel Ángel Antúnez Ruiz, para la tarea de LMGS</p>
+        </footer>
+    </main>
+
+</body>
+
+</html>
